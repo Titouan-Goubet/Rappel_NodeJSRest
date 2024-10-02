@@ -23,8 +23,8 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
-docker-compose.yml
 .dockerignore
+docker-compose.yml
 
 # Sequelize auto-generated files
 migrations

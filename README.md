@@ -24,8 +24,8 @@ Ce projet est une session de **rappel** sur la création d'API REST avec **Node.
 1. **Cloner le projet** :
 
    ```bash
-   git clone https://github.com/ton-utilisateur/rappel-nodejs-rest.git
-   cd rappel-nodejs-rest
+   git clone git@github.com:Titouan-Goubet/Rappel_NodeJSRest.git
+   cd Rappel_NodeJSRest
    ```
 
 2. **Installer les dépendances** :
@@ -89,4 +89,4 @@ Cette session de rappel a pour objectif de réviser les concepts suivants :
 
 ## Auteurs
 
-- [Titouan](https://github.com/ton-utilisateur)
+- [Titouan](https://github.com/Titouan-Goubet)
