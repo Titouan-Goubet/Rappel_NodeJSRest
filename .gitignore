@@ -1,1 +1,53 @@
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environnement local
 .env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+docker-compose.yml
+.dockerignore
+
+# Sequelize auto-generated files
+migrations
+seeders
+
+# SQLite (si utilisé avec Sequelize)
+*.sqlite
+*.sqlite3
+
+# Coverage reports
+coverage
+*.lcov
+
+# Build directory
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+
+# IDEs and editors
+.idea/
+.vscode/
+
+data/
