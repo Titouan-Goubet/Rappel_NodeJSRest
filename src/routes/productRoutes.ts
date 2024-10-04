@@ -6,13 +6,14 @@ import {
   getProducts,
   updateProduct,
 } from "../controllers/productController";
+import { validateProduct } from "../middlewares/validation";
 
 const router = express.Router();
 
-router.post("/", createProduct);
+router.post("/", validateProduct, createProduct);
+router.put("/:id", validateProduct, updateProduct);
 router.get("/", getProducts);
 router.get("/:id", getProduct);
-router.put("/:id", updateProduct);
 router.delete("/:id", deleteProduct);
 
 export default router;

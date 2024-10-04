@@ -6,10 +6,42 @@ const prisma = new PrismaClient();
 
 export const createProduct = asyncHandler(
   async (req: Request, res: Response) => {
-    const product = await prisma.product.create({
-      data: req.body,
+    const { categoryId, ...productData } = req.body;
+
+    // Vérifier si la catégorie existe
+    const category = await prisma.category.findUnique({
+      where: { id: categoryId },
     });
-    res.status(201).json(product);
+
+    if (!category) {
+      return res
+        .status(400)
+        .json({ message: "La catégorie spécifiée n'existe pas." });
+    }
+
+    try {
+      const product = await prisma.product.create({
+        data: {
+          ...productData,
+          category: {
+            connect: { id: categoryId },
+          },
+        },
+        include: {
+          category: true,
+          supplier: true,
+        },
+      });
+
+      res.status(201).json(product);
+    } catch (error) {
+      if ((error as any).code === "P2002") {
+        return res
+          .status(400)
+          .json({ message: "Un produit avec ce SKU existe déjà." });
+      }
+      throw error;
+    }
   }
 );
 
