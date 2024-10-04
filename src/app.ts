@@ -7,6 +7,11 @@ const port = 3000;
 
 // Middleware pour pouvoir analyser les format JSON
 // En gros on peut parser les requete http contenant du JSON dans le body
+const corsOptions = {
+  origin: "http://localhost:5173", // Autorisation de mon futur front end React
+  optionsSuccessStatus: 200,
+};
+
 app.use(express.json());
 
 app.use("/api/products", productRoutes);
