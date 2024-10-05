@@ -4,6 +4,7 @@ import asyncHandler from "../utils/asyncHandler";
 
 const prisma = new PrismaClient();
 
+// Créer un produit
 export const createProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { categoryId, ...productData } = req.body;
@@ -45,11 +46,13 @@ export const createProduct = asyncHandler(
   }
 );
 
+// Récuperer la liste des produits
 export const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const products = await prisma.product.findMany();
   res.json(products);
 });
 
+// Récuperer un produit par son ID
 export const getProduct = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const product = await prisma.product.findUnique({
@@ -62,6 +65,7 @@ export const getProduct = asyncHandler(async (req: Request, res: Response) => {
   res.json(product);
 });
 
+// Mettre à jour un produit
 export const updateProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -73,6 +77,7 @@ export const updateProduct = asyncHandler(
   }
 );
 
+// Supprimer un produit
 export const deleteProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;

@@ -21,16 +21,8 @@ export const validateProduct = (
     productSchema.parse(req.body);
     next();
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      if (error instanceof z.ZodError) {
-        if (error instanceof z.ZodError) {
-          res.status(400).json({ error: error.errors });
-        } else {
-          res.status(400).json({ error: "Unknown error" });
-        }
-      } else {
-        res.status(400).json({ error: "Unknown error" });
-      }
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.errors });
     } else {
       res.status(400).json({ error: "Unknown error" });
     }
