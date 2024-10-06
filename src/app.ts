@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Request, Response } from "express";
 import { errorHandler } from "./middlewares/errorHandler";
 import categoryRoutes from "./routes/categoryRoutes";
@@ -5,13 +6,12 @@ import productRoutes from "./routes/productRoutes";
 const app = express();
 const port = 3000;
 
-// Middleware pour pouvoir analyser les format JSON
-// En gros on peut parser les requete http contenant du JSON dans le body
 const corsOptions = {
   origin: "http://localhost:5173", // Autorisation de mon futur front end React
   optionsSuccessStatus: 200,
 };
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/products", productRoutes);
