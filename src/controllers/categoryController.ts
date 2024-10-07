@@ -4,6 +4,7 @@ import asyncHandler from "../utils/asyncHandler";
 
 const prisma = new PrismaClient();
 
+// Route pour créer une catégorie
 export const createCategory = asyncHandler(
   async (req: Request, res: Response) => {
     try {
@@ -32,5 +33,28 @@ export const createCategory = asyncHandler(
       console.error(error);
       res.status(500).json({ error: "Erreur interne du serveur" });
     }
+  }
+);
+
+// Route pour récupérer toutes les catégories
+export const getCategories = asyncHandler(
+  async (req: Request, res: Response) => {
+    const categories = await prisma.category.findMany();
+    res.json(categories);
+  }
+);
+
+// Route pour supprimer une catégorie
+export const deleteCategory = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const category = await prisma.category.delete({
+      where: { id },
+    });
+
+    res
+      .status(200)
+      .json({ message: "Catégorie supprimée avec succès", category });
   }
 );
