@@ -32,7 +32,11 @@ const loginSchema = z.object({
   password: z.string().min(1, "Le mot de passe est requis"),
 });
 
-const validateProduct = (req: Request, res: Response, next: NextFunction) => {
+export const validateProduct = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     productSchema.parse(req.body);
     next();
@@ -45,7 +49,11 @@ const validateProduct = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const validateCategory = (req: Request, res: Response, next: NextFunction) => {
+export const validateCategory = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     categorySchema.parse(req.body);
     next();
@@ -58,7 +66,11 @@ const validateCategory = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const validateRegister = (req: Request, res: Response, next: NextFunction) => {
+export const validateRegister = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     registerSchema.parse(req.body);
     next();
@@ -71,7 +83,11 @@ const validateRegister = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const validateLogin = (req: Request, res: Response, next: NextFunction) => {
+export const validateLogin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     loginSchema.parse(req.body);
     next();
@@ -83,5 +99,3 @@ const validateLogin = (req: Request, res: Response, next: NextFunction) => {
     }
   }
 };
-
-export { validateCategory, validateLogin, validateProduct, validateRegister };
