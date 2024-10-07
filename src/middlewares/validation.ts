@@ -12,13 +12,55 @@ const productSchema = z.object({
   supplierId: z.string().uuid().optional(),
 });
 
-export const validateProduct = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const categorySchema = z.object({
+  name: z.string().min(1).max(100),
+});
+
+const registerSchema = z.object({
+  email: z.string().email("Email invalide"),
+  password: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial"
+    ),
+});
+
+const loginSchema = z.object({
+  email: z.string().email("Email invalide"),
+  password: z.string().min(1, "Le mot de passe est requis"),
+});
+
+const validateProduct = (req: Request, res: Response, next: NextFunction) => {
   try {
     productSchema.parse(req.body);
+    next();
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.errors });
+    } else {
+      res.status(500).json({ error: "Unknown error" });
+    }
+  }
+};
+
+const validateCategory = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    categorySchema.parse(req.body);
+    next();
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.errors });
+    } else {
+      res.status(500).json({ error: "Unknown error" });
+    }
+  }
+};
+
+const validateRegister = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    registerSchema.parse(req.body);
     next();
   } catch (error) {
     if (error instanceof ZodError) {
@@ -29,21 +71,17 @@ export const validateProduct = (
   }
 };
 
-const categorySchema = z.object({
-  name: z.string().min(1).max(100),
-});
-
-const validateCategory = (req: Request, res: Response, next: NextFunction) => {
+const validateLogin = (req: Request, res: Response, next: NextFunction) => {
   try {
-    categorySchema.parse(req.body);
+    loginSchema.parse(req.body);
     next();
   } catch (error) {
     if (error instanceof ZodError) {
       res.status(400).json({ error: error.errors });
     } else {
-      res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Unknown error" });
     }
   }
 };
 
-export default validateCategory;
+export { validateCategory, validateLogin, validateProduct, validateRegister };
