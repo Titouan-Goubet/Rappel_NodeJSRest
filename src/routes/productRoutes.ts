@@ -6,14 +6,17 @@ import {
   getProducts,
   updateProduct,
 } from "../controllers/productController";
+import { authMiddleware } from "../middlewares/authMiddleware";
 import { validateProduct } from "../middlewares/validation";
 
 const router = express.Router();
 
-router.post("/", validateProduct, createProduct);
-router.put("/:id", validateProduct, updateProduct);
+// Routes nécessitant une connexion (Un role admin par la suite)
+router.post("/", authMiddleware, validateProduct, createProduct);
+router.put("/:id", authMiddleware, validateProduct, updateProduct);
+router.delete("/:id", authMiddleware, deleteProduct);
+
 router.get("/", getProducts);
 router.get("/:id", getProduct);
-router.delete("/:id", deleteProduct);
 
 export default router;
