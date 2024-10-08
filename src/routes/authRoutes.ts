@@ -5,6 +5,7 @@ import {
   refreshToken,
   register,
 } from "../controllers/authController";
+import { authMiddleware } from "../middlewares/authMiddleware";
 import { validateLogin, validateRegister } from "../middlewares/validation";
 
 const router = express.Router();
@@ -12,6 +13,6 @@ const router = express.Router();
 router.post("/register", validateRegister, register);
 router.post("/login", validateLogin, login);
 router.post("/refresh-token", refreshToken);
-router.post("/logout", logout);
+router.post("/logout", authMiddleware, logout);
 
 export default router;
