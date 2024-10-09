@@ -1,11 +1,13 @@
-// src/routes/orderRoutes.ts
 import express from "express";
 import { createOrder, getAllOrders } from "../controllers/orderController";
-import asyncHandler from "../utils/asyncHandler";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.post("/", asyncHandler(createOrder));
-router.get("/", asyncHandler(getAllOrders));
+// Connexion requise (+ Role admin / Privilége)
+router.post("/", authMiddleware, createOrder);
+
+// Commande pour récuperer toutes les commandes (Roles admin a prévoir)
+router.get("/", authMiddleware, getAllOrders);
 
 export default router;

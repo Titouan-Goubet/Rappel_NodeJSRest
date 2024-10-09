@@ -11,7 +11,7 @@ import { validateProduct } from "../middlewares/validation";
 
 const router = express.Router();
 
-// Routes nécessitant une connexion (Un role admin par la suite)
+// Connexion requise (+ Role admin / Privilége)
 router.post("/", authMiddleware, validateProduct, createProduct);
 router.put("/:id", authMiddleware, validateProduct, updateProduct);
 router.delete("/:id", authMiddleware, deleteProduct);

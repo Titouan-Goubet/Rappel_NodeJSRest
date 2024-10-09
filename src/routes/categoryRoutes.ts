@@ -11,6 +11,7 @@ import { validateCategory } from "../middlewares/validation";
 
 const router = express.Router();
 
+// Connexion requise (+ Role admin / Privilége)
 router.post("/", authMiddleware, validateCategory, createCategory);
 router.put("/", authMiddleware, updateCategory);
 router.delete("/", authMiddleware, deleteCategory);
