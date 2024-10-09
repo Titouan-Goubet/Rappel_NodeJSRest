@@ -4,6 +4,32 @@ import asyncHandler from "../utils/asyncHandler";
 
 const prisma = new PrismaClient();
 
+// Récuperer la liste des catégories
+// GET http://localhost:3000/api/categories/
+export const getCategories = asyncHandler(
+  async (req: Request, res: Response) => {
+    const categories = await prisma.category.findMany();
+    res.json(categories);
+  }
+);
+
+// Récuperer une catégorie
+// GET http://localhost:3000/api/categories/:id
+export const getCategory = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const category = await prisma.category.findUnique({
+    where: { id },
+    include: { products: true }, // Inclure les produits associés si nécessaire
+  });
+
+  if (!category) {
+    return res.status(404).json({ error: "Catégorie non trouvée." });
+  }
+
+  res.json(category);
+});
+
 // Créer une catégorie
 // POST http://localhost:3000/api/categories/
 export const createCategory = asyncHandler(
@@ -64,32 +90,8 @@ export const updateCategory = asyncHandler(
   }
 );
 
-// Récuperer la liste des catégories
-// GET http://localhost:3000/api/categories/
-export const getCategories = asyncHandler(
-  async (req: Request, res: Response) => {
-    const categories = await prisma.category.findMany();
-    res.json(categories);
-  }
-);
-
-export const getCategory = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  const category = await prisma.category.findUnique({
-    where: { id },
-    include: { products: true }, // Inclure les produits associés si nécessaire
-  });
-
-  if (!category) {
-    return res.status(404).json({ error: "Catégorie non trouvée." });
-  }
-
-  res.json(category);
-});
-
 // Supprimer une catégorie
-// DELETE http://localhost:3000/api/categories/
+// DELETE http://localhost:3000/api/categories/:id
 export const deleteCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;

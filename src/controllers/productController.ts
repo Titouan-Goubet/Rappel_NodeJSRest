@@ -69,7 +69,7 @@ export const getProduct = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // Mettre à jour un produit
-// PUT http://localhost:3000/api/products
+// PUT http://localhost:3000/api/products/:id
 export const updateProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -82,7 +82,7 @@ export const updateProduct = asyncHandler(
 );
 
 // Supprimer un produit
-// DELETE http://localhost:3000/api/products
+// DELETE http://localhost:3000/api/products/:id
 export const deleteProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;

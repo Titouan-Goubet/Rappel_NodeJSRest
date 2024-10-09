@@ -4,41 +4,6 @@ import asyncHandler from "../utils/asyncHandler";
 
 const prisma = new PrismaClient();
 
-// Créer une commande
-// POST http://localhost:3000/api/orders
-export const createOrder = asyncHandler(async (req: Request, res: Response) => {
-  const { status, items } = req.body;
-
-  try {
-    const order = await prisma.order.create({
-      data: {
-        status: status || "PENDING",
-        items: {
-          create: items.map((item: any) => ({
-            quantity: item.quantity,
-            price: item.price,
-            product: { connect: { id: item.productId } },
-          })),
-        },
-      },
-      include: {
-        items: true,
-      },
-    });
-    res.status(201).json(order);
-  } catch (error) {
-    if ((error as any).code === "P2025") {
-      res
-        .status(400)
-        .json({
-          message: "Un ou plusieurs produits spécifiés n'existent pas.",
-        });
-    } else {
-      throw error;
-    }
-  }
-});
-
 // Récupérer les commandes
 // GET http://localhost:3000/api/orders
 export const getAllOrders = asyncHandler(
@@ -75,6 +40,39 @@ export const getOrder = asyncHandler(async (req: Request, res: Response) => {
     throw new Error("Commande non trouvée");
   }
   res.json(order);
+});
+
+// Créer une commande
+// POST http://localhost:3000/api/orders
+export const createOrder = asyncHandler(async (req: Request, res: Response) => {
+  const { status, items } = req.body;
+
+  try {
+    const order = await prisma.order.create({
+      data: {
+        status: status || "PENDING",
+        items: {
+          create: items.map((item: any) => ({
+            quantity: item.quantity,
+            price: item.price,
+            product: { connect: { id: item.productId } },
+          })),
+        },
+      },
+      include: {
+        items: true,
+      },
+    });
+    res.status(201).json(order);
+  } catch (error) {
+    if ((error as any).code === "P2025") {
+      res.status(400).json({
+        message: "Un ou plusieurs produits spécifiés n'existent pas.",
+      });
+    } else {
+      throw error;
+    }
+  }
 });
 
 // Mettre à jour une commande
