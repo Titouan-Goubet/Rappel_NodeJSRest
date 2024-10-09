@@ -1,7 +1,8 @@
 import cors from "cors";
-import express, { Request, Response } from "express";
+import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
+import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler";
 import authRoutes from "./routes/authRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
@@ -31,11 +32,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
+app.use(morgan("dev"));
 app.use(errorHandler);
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
 
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
