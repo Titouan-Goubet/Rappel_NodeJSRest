@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { z, ZodError } from "zod";
 
+// Schéma de validation produit
 const productSchema = z.object({
   name: z.string().min(1).max(255),
   description: z.string().optional(),
@@ -12,10 +13,12 @@ const productSchema = z.object({
   supplierId: z.string().uuid().optional(),
 });
 
+// Schéma de validation catégorie
 const categorySchema = z.object({
   name: z.string().min(1).max(100),
 });
 
+// Schéma de validation inscription
 const registerSchema = z.object({
   email: z.string().email("Email invalide"),
   password: z
@@ -27,9 +30,23 @@ const registerSchema = z.object({
     ),
 });
 
+// Schéma de validation connexion
 const loginSchema = z.object({
   email: z.string().email("Email invalide"),
   password: z.string().min(1, "Le mot de passe est requis"),
+});
+
+const orderItemSchema = z.object({
+  productId: z.string().uuid(),
+  quantity: z.number().int().positive(),
+  price: z.number().positive(),
+});
+
+const orderSchema = z.object({
+  status: z
+    .enum(["PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"])
+    .optional(),
+  items: z.array(orderItemSchema).nonempty(),
 });
 
 export const validateProduct = (
@@ -90,6 +107,23 @@ export const validateLogin = (
 ) => {
   try {
     loginSchema.parse(req.body);
+    next();
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ error: error.errors });
+    } else {
+      res.status(500).json({ error: "Unknown error" });
+    }
+  }
+};
+
+export const validateOrder = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    orderSchema.parse(req.body);
     next();
   } catch (error) {
     if (error instanceof ZodError) {

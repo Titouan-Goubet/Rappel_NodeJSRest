@@ -4,7 +4,8 @@ import asyncHandler from "../utils/asyncHandler";
 
 const prisma = new PrismaClient();
 
-// Route pour créer une catégorie
+// Créer une catégorie
+// POST http://localhost:3000/api/categories/
 export const createCategory = asyncHandler(
   async (req: Request, res: Response) => {
     try {
@@ -36,7 +37,8 @@ export const createCategory = asyncHandler(
   }
 );
 
-// Route pour mettre à jour une catégorie
+// Mettre a jour une catégorie
+// PUT http://localhost:3000/api/categories/
 export const updateCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -62,7 +64,8 @@ export const updateCategory = asyncHandler(
   }
 );
 
-// Route pour récupérer toutes les catégories
+// Récuperer la liste des catégories
+// GET http://localhost:3000/api/categories/
 export const getCategories = asyncHandler(
   async (req: Request, res: Response) => {
     const categories = await prisma.category.findMany();
@@ -70,7 +73,6 @@ export const getCategories = asyncHandler(
   }
 );
 
-// Route pour récupérer une catégorie spécifique
 export const getCategory = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -86,7 +88,8 @@ export const getCategory = asyncHandler(async (req: Request, res: Response) => {
   res.json(category);
 });
 
-// Route pour supprimer une catégorie
+// Supprimer une catégorie
+// DELETE http://localhost:3000/api/categories/
 export const deleteCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;

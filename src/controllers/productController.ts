@@ -5,6 +5,7 @@ import asyncHandler from "../utils/asyncHandler";
 const prisma = new PrismaClient();
 
 // Créer un produit
+// POST http://localhost:3000/api/products
 export const createProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { categoryId, ...productData } = req.body;
@@ -47,12 +48,14 @@ export const createProduct = asyncHandler(
 );
 
 // Récuperer la liste des produits
+// GET http://localhost:3000/api/products
 export const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const products = await prisma.product.findMany();
   res.json(products);
 });
 
 // Récuperer un produit par son ID
+// GET http://localhost:3000/api/products/:id
 export const getProduct = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const product = await prisma.product.findUnique({
@@ -66,6 +69,7 @@ export const getProduct = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // Mettre à jour un produit
+// PUT http://localhost:3000/api/products
 export const updateProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -78,6 +82,7 @@ export const updateProduct = asyncHandler(
 );
 
 // Supprimer un produit
+// DELETE http://localhost:3000/api/products
 export const deleteProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;

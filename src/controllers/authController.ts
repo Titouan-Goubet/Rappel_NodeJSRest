@@ -6,7 +6,8 @@ import asyncHandler from "../utils/asyncHandler";
 
 const prisma = new PrismaClient();
 
-// Route pour gérer l'inscription
+// Inscription d'un utilisateur
+// http://localhost:3000/api/auth/register
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -29,7 +30,8 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     .json({ message: "Utilisateur créé avec succès.", userId: user.id });
 });
 
-// Route pour gérer la connexion
+// Connexion d'un utilisateur
+// http://localhost:3000/api/auth/login
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -80,7 +82,8 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   res.json({ accessToken });
 });
 
-// L'utilisateur doit refresh son access token tous les 15 mn par soucis de sécurité
+// Rafraichir le token d'accès via le refresh token
+// // POST http://localhost:3000/api/auth/refresh-token
 export const refreshToken = asyncHandler(
   async (req: Request, res: Response) => {
     // On récupére alors le refreshToken dans les cookie http only et on vérifie sa validité
@@ -118,6 +121,8 @@ export const refreshToken = asyncHandler(
   }
 );
 
+// Déconnexion d'un utilisateur
+// POST http://localhost:3000/api/auth/logout
 export const logout = asyncHandler(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
